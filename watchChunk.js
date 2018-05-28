@@ -6,6 +6,8 @@
 //
 // mongo --host MONGOS_HOST --port MONGOS_PORT -u admin -p 123 admin watchChunks.js | gzip > /tmp/actionChangelgoWatcher.log.gz
 //
+// The script requires MongoDB v3.6 or newer
+//
 var watchCursorChangelog = db.getSiblingDB("config").changelog.watch();
 var watchCursorActionlog = db.getSiblingDB("config").actionlog.watch();
 
