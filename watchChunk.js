@@ -4,22 +4,22 @@
 //
 // The script can be run as:
 //
-// mongo --host MONGOS_HOST --port MONGOS_PORT -u admin -p 123 admin watchChunks.js | gzip > /tmp/actionChangelgoWatcher.log.gz
+// mongo --host MONGOS_HOST --port MONGOS_PORT -u admin -p 123 admin watchChunks.js > /tmp/actionChangelgoWatcher.log.gz 2>&1
 //
 // The script requires MongoDB v3.6 or newer
 //
 var watchCursorChangelog = db.getSiblingDB("config").changelog.watch();
 var watchCursorActionlog = db.getSiblingDB("config").actionlog.watch();
 
-while (!watchCursorChangelog.isExhausted() && !watchCursorActionlog.isExhausted()) {
-
+while (!watchCursorChangelog.isExhausted() || !watchCursorActionlog.isExhausted()) {
+    var change = "";
     if (watchCursorChangelog.hasNext()){
-        var change = watchCursorChangelog.next();
+        change = watchCursorChangelog.next();
         printjson(change);
     };
 
     if (watchCursorActionlog.hasNext()){
-        var change = watchCursorActionlog.next();
+        change = watchCursorActionlog.next();
         printjson(change);
     };
 };
